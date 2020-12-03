@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+
+import os, sys
+
+fb = open('input.txt', 'r')
+
+text = fb.read().split('\n')[:-1]
+
+width = len(text[0])
+
+# print(text)
+
+# Part One
+
+count = 0
+
+for i in range(len(text[:])):
+    if(text[i][(i*3)%width] == "#"):
+        count = count + 1
+
+print("Right 3, down 1:\t", count)
+
+# Part Two
+
+count = 0
+
+for i in range(len(text[:])):
+    if(text[i][(i)%width] == "#"):
+        count = count + 1
+
+print("Right 1, down 1:\t", count)
+
+count = 0
+
+for i in range(len(text[:])):
+    if(text[i][(i*5)%width] == "#"):
+        count = count + 1
+
+print("Right 5, down 1:\t", count)
+
+count = 0
+
+for i in range(len(text[:])):
+    if(text[i][(i*7)%width] == "#"):
+        count = count + 1
+
+print("Right 7, down 1:\t", count)
+
+count = 0
+
+for i in range(int(len(text[:])/2)):
+    if(text[i*2][(i)%width] == "#"):
+        count = count + 1
+
+print("Right 1, down 2:\t", count)
