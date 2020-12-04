@@ -1,0 +1,97 @@
+#!/usr/bin/env python
+
+import os, sys
+
+fb = open('input.txt', 'r')
+
+required = ("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")
+
+text = fb.read().split('\n\n')
+text2 = text[:]
+#
+# print(len(text))
+
+tcount = 0
+
+for i in range(len(text[:])):
+    text[i] = text[i].replace('\n', " ").split(" ")
+    count = 0
+    dict = {"byr":0, "iyr":0, "eyr":0, "hgt":0, "hcl":0, "ecl":0, "pid":0}
+    for j in range(len(text[i])):
+        text[i][j] = text[i][j].split(":")
+
+        if text[i][j][0] in dict:
+            dict[text[i][j][0]] = 1
+
+    # print(dict)
+    if (dict["byr"] + dict["iyr"] + dict["eyr"] + dict["hgt"] + dict["hcl"] + dict["ecl"] + dict["pid"]) == 7:
+        tcount = tcount + 1
+        # print(text[i])
+    # else:
+        # print(text[i])
+
+# print(tcount)
+
+# print(text)
+
+tcount = 0
+
+text = text2
+
+for i in range(len(text[:])):
+    text[i] = text[i].replace('\n', " ").split(" ")
+    count = 0
+    dict = {"byr":0, "iyr":0, "eyr":0, "hgt":0, "hcl":0, "ecl":0, "pid":0}
+    for j in range(len(text[i])):
+        text[i][j] = text[i][j].split(":")
+
+        if text[i][j][0] == "byr":
+            try:
+                if int(text[i][j][1]) >= 1920 and int(text[i][j][1]) <= 2002:
+                    dict[text[i][j][0]] = 1
+            except:
+                pass
+        elif text[i][j][0] == "iyr":
+            try:
+                if int(text[i][j][1]) >= 2010 and int(text[i][j][1]) <= 2020:
+                    dict[text[i][j][0]] = 1
+            except:
+                pass
+        elif text[i][j][0] == "eyr":
+            try:
+                if int(text[i][j][1]) >= 2020 and int(text[i][j][1]) <= 2030:
+                    dict[text[i][j][0]] = 1
+            except:
+                pass
+        elif text[i][j][0] == "hgt":
+            try:
+                if int(text[i][j][1].replace("cm", "")) >= 150 and int(text[i][j][1].replace("cm", "")) <= 193:
+                    dict[text[i][j][0]] = 1
+            except:
+                try:
+                    if int(text[i][j][1].replace("in", "")) >= 59 and int(text[i][j][1].replace("in", "")) <= 76:
+                        dict[text[i][j][0]] = 1
+                except:
+                    pass
+        elif text[i][j][0] == "hcl":
+            try:
+                if(text[i][j][1][0] == "#" and len(text[i][j][1][1:]) == 6):
+                    dict[text[i][j][0]] = 1
+            except:
+                pass
+        elif text[i][j][0] == "ecl":
+            if text[i][j][1] in ("amb", "blu", "brn", "gry", "grn", "hzl", "oth"):
+                dict[text[i][j][0]] = 1
+        elif text[i][j][0] == "pid":
+            try:
+                if (len(text[i][j][1]) == 9 and int(text[i][j][1])):
+                    dict[text[i][j][0]] = 1
+            except:
+                pass
+
+    print(dict)
+    if (dict["byr"] + dict["iyr"] + dict["eyr"] + dict["hgt"] + dict["hcl"] + dict["ecl"] + dict["pid"]) == 7:
+        tcount = tcount + 1
+        print(text[i])
+
+print(tcount)
