@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+
+import os, sys
+
+fb = open('input.txt', 'r')
+
+text = fb.read().split('\n')[:-1]
+
+max = 0
+
+for id in range(len(text[:])):
+    text[id] = text[id].replace("L", "0").replace("R", "1").replace("F", "0").replace("B", "1")
+    text[id] = int(text[id], 2)
+    if (max < int(text[id])):
+        max = int(text[id])
+
+print(max)
+
+text.sort()
+
+print(text)
+
+prev = text[0]
+
+for id in range(1, len(text[:])):
+    if (text[id] != prev + 1):
+        print(text[id])
+    prev = text[id];
