@@ -1,0 +1,51 @@
+#!/usr/bin/env python
+
+import os, sys
+
+fb = open('input.txt', 'r')
+
+text = fb.read().split('\n\n')
+
+text2 = text[:]
+
+for id in range(len(text[:])):
+    text[id] = text[id].replace("\n", "")
+
+print(text)
+
+count = 0
+
+for word in text[:]:
+    used = []
+    for letter in word[:]:
+        if (letter not in used):
+            count = count + 1
+            used.append(letter)
+
+print(count)
+
+count = 0
+
+for group in text2[:]:
+    group = group.split("\n")
+    used = {'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'g': 0, 'h': 0, 'i': 0, 'j': 0, 'k': 0, 'l': 0, 'm': 0, 'n': 0, 'o': 0, 'p': 0, 'q': 0, 'r': 0, 's': 0, 't': 0, 'u': 0, 'v': 0, 'w': 0, 'x': 0, 'y': 0, 'z': 0 }
+    for person in group[:]:
+        print(person)
+        for letter in person[:]:
+            print(letter)
+            used[letter] = used[letter] + 1
+            person.replace(letter, "")
+    print(group)
+    print(used)
+
+    for thing in used:
+        if group[-1] == "":
+            if used[thing] == len(group) - 1:
+                count = count + 1
+                print(group, " ", thing)
+        else:
+            if used[thing] == len(group):
+                count = count + 1
+                print(group, " ", thing)
+
+print(count)
