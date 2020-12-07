@@ -1,0 +1,82 @@
+#!/usr/bin/env python
+
+import os, sys
+
+def find_golden(list, bag_name):
+
+    if 'shiny gold' in list[bag_name]:
+        return 1
+    else:
+        for other in list[bag_name]:
+            if find_golden(list, other) == 1:
+                return 1
+
+    return 0
+
+def inside_golden(list, bag_name):
+
+    count = 1
+
+    if list[bag_name] == {}:
+        print("Empty bag: ", bag_name)
+        return 1
+
+    print(bag_name, " contains ", list[bag_name])
+
+    for other in list[bag_name]:
+        print(list[bag_name][other], " " , other)
+        count = count + list[bag_name][other] * inside_golden(list, other)
+
+    return count
+
+
+fb = open('input.txt', 'r')
+
+text = fb.read().split('\n')[:-1]
+
+bags = {}
+
+for id in range(len(text)):
+
+    text[id] = text[id].split("contain")
+    text[id][0] = text[id][0].replace(" bags ", "")
+    text[id][1] = text[id][1].replace(".", "").split(",")
+    # print(text[id][1])
+
+    bags[text[id][0]] = text[id][1]
+    # text[id] = temp1
+
+    # print(temp1)
+
+# print(text)
+
+for id in bags:
+
+    # print(bags[id])
+    if (bags[id] != [' no other bags']):
+
+        temp = {}
+
+        # print(text[id])
+
+        for k in range(len(bags[id])):
+            temp[bags[id][k].replace(" bags", "").replace(" bag", "")[3:]] = int(bags[id][k][1:2])
+            # print(text[id][1][k][1:2])
+            # print(text[id][1][k].replace(" bags", "").replace(" bag", "")[3:])
+
+        # print(temp)
+
+        bags[id] = temp
+    else:
+        bags[id] = {}
+
+print(bags)
+
+count = 0
+for i in bags:
+    count = count + find_golden(bags, i)
+    # print("Count: ", count)
+
+print(count)
+
+print(inside_golden(bags, 'shiny gold') - 1)
