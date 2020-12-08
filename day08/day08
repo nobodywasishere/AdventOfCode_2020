@@ -1,0 +1,51 @@
+#!/usr/bin/env python
+
+import os, sys
+
+fb = open('input.txt', 'r')
+
+text = fb.read().split('\n')[:-1]
+
+# print(text)
+
+def run_file(text):
+    i = 0
+    acc = 0
+    lines = []
+    while(i < len(text)):
+        if i in lines:
+            # print("infinite loop detected!")
+            return
+        else:
+            lines.append(i)
+
+        #print("i: ", i, "\nacc: ", acc)
+
+        action = text[i][:3]
+        value = int(text[i][4:])
+
+        if action == "nop":
+            pass
+        elif action == "acc":
+            acc = acc + value
+        elif action == "jmp":
+            i = i + value
+            continue
+
+        i = i + 1
+
+    print("i: ", i, ", acc: ", acc)
+
+run_file(text)
+
+for j in range(len(text[:])):
+    text2 = text[:]
+
+    # print(text2[j])
+    if text2[j][:3] == "jmp":
+        text2[j] = text2[j].replace("jmp", "nop")
+    elif text2[j][:3] == "nop":
+        text2[j] = text2[j].replace("nop", "jmp")
+    # print(text2[j])
+
+    run_file(text2)
