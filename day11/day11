@@ -1,0 +1,112 @@
+#!/usr/bin/env python
+
+import os, sys, time, copy
+
+fb = open('input.txt', 'r')
+
+text = fb.read().split('\n')[:-1]
+
+text_pt2 = copy.deepcopy(text)
+
+for i in range(len(text)):
+    text[i] = list(text[i])
+
+# print(text)
+
+EMPTY = "L"
+OCCUP = "#"
+FLOOR = "."
+
+WIDTH = len(text[0])
+HEIGHT = len(text)
+
+def cycle(text1):
+    text_new = copy.deepcopy(text1)
+    for j in range(HEIGHT):
+        line = []
+        for i in range(WIDTH):
+            surrounding = 0
+
+            for m, n in [(1, 0), (-1, 0), (1, 1), (-1, 1), (1, -1), (-1, -1), (0, 1), (0, -1)]:
+                if j+m >= 0 and j+m < len(text) and i+n >= 0 and i+n < len(text[0]):
+                    if text[j+m][i+n] == OCCUP:
+                        surrounding += 1
+
+            line.append(surrounding)
+
+            if (text1[j][i] == FLOOR):
+                continue
+            elif text1[j][i] == EMPTY and surrounding == 0:
+                text_new[j][i] = OCCUP
+            elif text1[j][i] == OCCUP and surrounding > 3:
+                text_new[j][i] = EMPTY
+
+        # print(line)
+    return text_new
+
+def cycle_pt2(text):
+    text_new = copy.deepcopy(text)
+    for j in range(HEIGHT):
+        line = []
+        for i in range(WIDTH):
+            surrounding = 0
+
+            for m, n in [(1, 0), (-1, 0), (1, 1), (-1, 1), (1, -1), (-1, -1), (0, 1), (0, -1)]:
+                flag = False
+                posx = i
+                posy = j
+                while(True):
+                    posx += m
+                    posy += n
+                    if posx < 0 or posx >= len(text[0]):
+                        break
+                    if posy < 0 or posy >= len(text):
+                        break
+
+                    if text[posy][posx] == FLOOR:
+                        continue
+                    if text[posy][posx] == OCCUP:
+                        surrounding += 1
+                        break
+                    if text[posy][posx] == EMPTY:
+                        break
+
+
+            if (text[j][i] == FLOOR):
+                continue
+            elif text[j][i] == EMPTY and surrounding == 0:
+                text_new[j][i] = OCCUP
+            elif text[j][i] == OCCUP and surrounding > 4:
+                text_new[j][i] = EMPTY
+
+    return text_new
+
+def count_occup(text1):
+    count = 0
+
+    for i in range(WIDTH):
+        for j in range(HEIGHT):
+            if text1[j][i] == OCCUP:
+                count += 1
+
+    return count
+
+count_prev = -1
+count = count_occup(text)
+
+while count_prev != count:
+    text = copy.deepcopy(cycle(text.copy()))
+    count_prev = count
+    count = count_occup(text)
+
+print(count)
+
+count_prev = -1
+count = count_occup(text_pt2)
+
+while count_prev != count:
+    text_pt2 = copy.deepcopy(cycle_pt2(text_pt2.copy()))
+    count_prev = count
+    count = count_occup(text_pt2)
+
+print(count)
